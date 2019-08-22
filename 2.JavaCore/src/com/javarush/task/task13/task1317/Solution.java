@@ -9,6 +9,7 @@ public class Solution {
         System.out.println(new Today(WeatherType.CLOUDY));
         System.out.println(new Today(WeatherType.FOGGY));
         System.out.println(new Today(WeatherType.FREEZING));
+
     }
 
     static class Today {
