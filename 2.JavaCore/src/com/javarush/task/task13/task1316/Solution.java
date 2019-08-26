@@ -20,19 +20,6 @@ public class Solution {
 
         final String NAME = "Submit";
 
-        public void onPress();
-
-        protected void onPress();
-
-        void onPress();
-
-        private void onPress();
-
-        protected String onPress(Object o);
-
         String onPress(Object o);
-
-        private String onPress(Object o);
-
     }
 }
