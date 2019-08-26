@@ -18,14 +18,17 @@ public class Solution {
         Color getColor();
     }
 
-    public static class Fox implements Animal {
+    public abstract static class Fox implements Animal {
         public String getName() {
             return "Fox";
         }
     }
 
-    public abstract static class BigFox {
-
+    public static class BigFox extends Fox {
+        @Override
+        public Color getColor() {
+            return Color.RED;
+        }
     }
 
 }
