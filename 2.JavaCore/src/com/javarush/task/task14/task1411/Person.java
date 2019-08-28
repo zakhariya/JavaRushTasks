@@ -1,6 +1,7 @@
 package com.javarush.task.task14.task1411;
 
 public interface Person {
+
     class User implements Person {
         void live() {
             System.out.println("I usually just live.");

@@ -15,7 +15,11 @@ public class Solution {
     }
 
     public static void printMainInfo(Object object) {
-        //напишите тут ваш код
+        if (object instanceof Drawable) {
+            ((Drawable) object).draw();
+        } else if (object instanceof Movable) {
+            ((Movable) object).move();
+        }
     }
 
     static interface Movable {
@@ -23,7 +27,12 @@ public class Solution {
         void move();
     }
 
+    static interface Drawable {
+        void draw();
+    }
+
     static class Circle implements Movable {
+
 
         public void draw() {
             System.out.println("Can be drawn");
@@ -33,10 +42,6 @@ public class Solution {
             System.out.println("Can be moved");
         }
 
-    }
-
-    static interface Drawable {
-        void draw();
     }
 
     static class Rectangle implements Drawable {
