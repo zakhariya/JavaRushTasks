@@ -14,6 +14,7 @@ public class Snake {
     public int speed = 1;
 
     private Direction direction = Direction.LEFT;
+    private Game game;
 
     private List<GameObject> snakeParts = new ArrayList<>();
 
@@ -21,51 +22,108 @@ public class Snake {
         snakeParts.add(new GameObject(x, y));
         snakeParts.add(new GameObject(x + 1, y));
         snakeParts.add(new GameObject(x + 2, y));
+        snakeParts.add(new GameObject(x + 3, y));
+        snakeParts.add(new GameObject(x + 4, y));
     }
 
     public void draw(Game game) {
+        this.game = game;
+
         int size = snakeParts.size();
+
         for (int i = 0; i < size; i++) {
-            game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, 
-                    Color.NONE, i == 0 || i == size - 1? HEAD_SIGN : BODY_SIGN,
-                    isAlive ? Color.BLACK : Color.RED, 75);
+            int x = snakeParts.get(i).x;
+            int y = snakeParts.get(i).y;
+
+            if (i == 0) {
+                game.setCellValueEx(x, y, Color.NONE, HEAD_SIGN, isAlive ? Color.BLUE : Color.RED, 75);
+            } else if (i == size - 1) {
+                game.setCellValueEx(x, y, Color.NONE, HEAD_SIGN, isAlive ? Color.BLACK : Color.RED, 75);
+            } else {
+                game.setCellValueEx(x, y, Color.NONE, BODY_SIGN, isAlive ? Color.BLACK : Color.RED, 75);
+            }
         }
     }
+
+//    public void setDirection(Direction direction) {
+//        boolean horizontal = (this.direction.equals(Direction.LEFT) || this.direction.equals(Direction.RIGHT))
+//                && snakeParts.get(0).x == snakeParts.get(1).x;
+//
+//        boolean vertical = (this.direction.equals(Direction.UP) || this.direction.equals(Direction.DOWN))
+//                && snakeParts.get(0).y == snakeParts.get(1).y;
+//
+//        if (horizontal || vertical) {
+//            return;
+//        }
+//
+//        horizontal = (direction.equals(Direction.LEFT) && this.direction.equals(Direction.RIGHT))
+//                || (direction.equals(Direction.RIGHT) && this.direction.equals(Direction.LEFT));
+//        vertical = (direction.equals(Direction.UP) && this.direction.equals(Direction.DOWN))
+//                || (direction.equals(Direction.DOWN) && this.direction.equals(Direction.UP));
+//
+//        if (horizontal || vertical) {
+//            return;
+//        }
+//
+//        this.direction = direction;
+//    }
 
     public void setDirection(Direction direction) {
-        System.out.println("New direction: " + direction + ", last direction: " + this.direction + ", speed: " + speed);
-        if (direction.equals(Direction.LEFT) && this.direction.equals(Direction.LEFT)
-            || direction.equals(Direction.RIGHT) && this.direction.equals(Direction.RIGHT)
-            || direction.equals(Direction.UP) && this.direction.equals(Direction.UP)
-            || direction.equals(Direction.DOWN) && this.direction.equals(Direction.DOWN)) {
+        boolean acceleration =
+                direction.equals(Direction.LEFT) && this.direction.equals(Direction.LEFT)
+                || direction.equals(Direction.RIGHT) && this.direction.equals(Direction.RIGHT)
+                || direction.equals(Direction.UP) && this.direction.equals(Direction.UP)
+                || direction.equals(Direction.DOWN) && this.direction.equals(Direction.DOWN);
 
-            if (speed < 6) {
-                speed++;
-            }
-        } else if (direction.equals(Direction.LEFT) && this.direction.equals(Direction.RIGHT)
+        boolean braking =
+                direction.equals(Direction.LEFT) && this.direction.equals(Direction.RIGHT)
                 || direction.equals(Direction.RIGHT) && this.direction.equals(Direction.LEFT)
                 || direction.equals(Direction.UP) && this.direction.equals(Direction.DOWN)
-                || direction.equals(Direction.DOWN) && this.direction.equals(Direction.UP)) {
+                || direction.equals(Direction.DOWN) && this.direction.equals(Direction.UP);
 
-            if (speed > 0) {
-                speed--;
-            } else {
-                revertSnake();
-                this.direction = direction;
+        int headX = snakeParts.get(0).x;
+        int headY = snakeParts.get(0).y;
+
+
+
+        boolean horizontalCollision = direction.equals(Direction.LEFT) && .x == snakeParts.get(1).x
+                || this.direction.equals(Direction.RIGHT) && snakeParts.get(0).x <= snakeParts.get(1).x;
+
+        boolean verticalCollision = this.direction.equals(Direction.UP) && snakeParts.get(0).y >= snakeParts.get(1).y
+                || this.direction.equals(Direction.DOWN) && snakeParts.get(0).y <= snakeParts.get(1).y;
+
+        if (acceleration && speed < 6) {
+            speed++;
+        } else if (braking && speed > 0) {
+            speed--;
+        } else if(braking && speed == 0) {
+            revert();
+        } else {
+            if (speed == 0) {
                 speed++;
             }
-        } else {
-            if (speed == 0) speed++;
-            this.direction = direction;
         }
 
+        System.out.println(horizontalCollision + " " + verticalCollision);
+
+        if (horizontalCollision || verticalCollision) {
+            if (this.direction.equals(Direction.LEFT)) {
+                this.direction = Direction.RIGHT;
+            } else if (this.direction.equals(Direction.RIGHT)) {
+                this.direction = Direction.LEFT;
+            } else if (this.direction.equals(Direction.DOWN)) {
+                this.direction = Direction.UP;
+            } else if (this.direction.equals(Direction.UP)){
+                this.direction = Direction.DOWN;
+            }
+        }
+
+        this.direction = direction;
     }
 
-    private void revertSnake() {
+    public void revert() {
         int size = snakeParts.size();
         int last = size;
-
-        System.out.println("Snake starts revertion, head at: " + snakeParts.get(0).x + " " + snakeParts.get(0).y);
 
         for (int i = 0; i < size; i++) {
             if (i == --last
@@ -76,16 +134,14 @@ public class Snake {
             GameObject tmp1 = snakeParts.get(i);
             GameObject tmp2 = snakeParts.get(last);
 
-            System.out.println(tmp1.x + " " + tmp1.y + " || " + tmp2.x + " " + tmp2.y);
-
             snakeParts.set(i, tmp2);
             snakeParts.set(last, tmp1);
         }
-        System.out.println("Snake was reverted. Head at: " + snakeParts.get(0).x + " " + snakeParts.get(0).y);
+
+        draw(game);
     }
 
     public void move(Apple apple) {
-        System.out.println("Moved to " + this.direction + ", speed: " + speed);
         GameObject newHead = createNewHead();
 
         if (newHead.x < 0 || newHead.y < 0
@@ -97,7 +153,6 @@ public class Snake {
         }
 
         if (checkCollision(newHead)) {
-            System.out.println(newHead.x + " " + newHead.y);
             isAlive = false;
 
             return;

@@ -107,6 +107,8 @@ public class SnakeGame extends Game {
             snake.setDirection(Direction.DOWN);
         } else if (key.equals(Key.SPACE) && isGameStopped) {
             createGame();
+        } else if (key.equals(Key.SPACE) && !isGameStopped) {
+            snake.revert();
         }
 
         if (key.equals(Key.LEFT) || key.equals(Key.RIGHT)
