@@ -84,13 +84,14 @@ public class Snake {
         int headX = snakeParts.get(0).x;
         int headY = snakeParts.get(0).y;
 
+        int neckX = snakeParts.get(1).x;
+        int neckY = snakeParts.get(1).y;
 
+        boolean horizontalCollision = (direction.equals(Direction.LEFT) && headX > neckX
+                || direction.equals(Direction.RIGHT) && headX < neckX) && headY == neckY;
 
-        boolean horizontalCollision = direction.equals(Direction.LEFT) && .x == snakeParts.get(1).x
-                || this.direction.equals(Direction.RIGHT) && snakeParts.get(0).x <= snakeParts.get(1).x;
-
-        boolean verticalCollision = this.direction.equals(Direction.UP) && snakeParts.get(0).y >= snakeParts.get(1).y
-                || this.direction.equals(Direction.DOWN) && snakeParts.get(0).y <= snakeParts.get(1).y;
+        boolean verticalCollision = (direction.equals(Direction.UP) && headY > neckY
+                || direction.equals(Direction.DOWN) && headY < neckY) && headX == neckX;
 
         if (acceleration && speed < 6) {
             speed++;
@@ -98,27 +99,14 @@ public class Snake {
             speed--;
         } else if(braking && speed == 0) {
             revert();
-        } else {
-            if (speed == 0) {
+            this.direction = direction;
+        } else if (speed == 0) {
                 speed++;
-            }
         }
 
-        System.out.println(horizontalCollision + " " + verticalCollision);
-
-        if (horizontalCollision || verticalCollision) {
-            if (this.direction.equals(Direction.LEFT)) {
-                this.direction = Direction.RIGHT;
-            } else if (this.direction.equals(Direction.RIGHT)) {
-                this.direction = Direction.LEFT;
-            } else if (this.direction.equals(Direction.DOWN)) {
-                this.direction = Direction.UP;
-            } else if (this.direction.equals(Direction.UP)){
-                this.direction = Direction.DOWN;
-            }
+        if (!horizontalCollision && !verticalCollision) {
+            this.direction = direction;
         }
-
-        this.direction = direction;
     }
 
     public void revert() {
@@ -137,6 +125,66 @@ public class Snake {
             snakeParts.set(i, tmp2);
             snakeParts.set(last, tmp1);
         }
+
+        int headX = snakeParts.get(0).x;
+        int headY = snakeParts.get(0).y;
+
+        int neckX = snakeParts.get(1).x;
+        int neckY = snakeParts.get(1).y;
+
+        boolean horizontalDirectionLeft = headY == neckY && headX > neckX;
+        boolean horizontalDirectionRight = headY == neckY && headX < neckX;
+        boolean verticalDirectionUp = headX == neckX && headY > neckY;
+        boolean verticalDirectionDown = headX == neckX && headY < neckY;
+
+        boolean horizontalLeftWall = headX + 1 < 0;
+        boolean horizontalRightWall = headX + 1 >= SnakeGame.WIDTH;
+        boolean verticalUpWall = headY + 1 < 0;
+        boolean verticalDownWall = headY + 1 >= SnakeGame.HEIGHT;
+
+        if (horizontalDirectionLeft) {
+            if (!horizontalLeftWall) {
+                this.direction = Direction.LEFT;
+            } else if (!verticalUpWall) {
+                this.direction = Direction.UP;
+            } else {
+                this.direction = Direction.DOWN;
+            }
+        } else if (horizontalDirectionRight) {
+            if (!horizontalRightWall) {
+                this.direction = Direction.LEFT;
+            } else if (!verticalUpWall) {
+                this.direction = Direction.UP;
+            } else {
+                this.direction = Direction.DOWN;
+            }
+        } else if (verticalDirectionUp) {
+            if (!verticalUpWall) {
+                this.direction = Direction.UP;
+            } else if (!horizontalLeftWall) {
+                this.direction = Direction.LEFT;
+            } else {
+                this.direction = Direction.RIGHT;
+            }
+        } else if (verticalDirectionDown) {
+            if (!verticalDownWall) {
+                this.direction = Direction.DOWN;
+            } else if (!horizontalLeftWall) {
+                this.direction = Direction.LEFT;
+            } else {
+                this.direction = Direction.RIGHT;
+            }
+        }
+
+//        if (this.direction.equals(Direction.LEFT)) {
+//            this.direction = Direction.RIGHT;
+//        } else if (this.direction.equals(Direction.RIGHT)) {
+//            this.direction = Direction.LEFT;
+//        } else if (this.direction.equals(Direction.DOWN)) {
+//            this.direction = Direction.UP;
+//        } else if (this.direction.equals(Direction.UP)){
+//            this.direction = Direction.DOWN;
+//        }
 
         draw(game);
     }
