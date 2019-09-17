@@ -29,7 +29,7 @@ public class SnakeGame extends Game {
         isGameStopped = false;
         snake = new Snake(WIDTH / 2, HEIGHT / 2);
         createNewApple();
-        turnDelay = 400;
+        turnDelay = 300;
 
         setTurnTimer(turnDelay);
         drawScene();
@@ -72,10 +72,6 @@ public class SnakeGame extends Game {
 
     @Override
     public void onTurn(int step) {
-        if (snake.speed == 0) {
-            return;
-        }
-
         snake.move(apple);
 
         if (!apple.isAlive) {
@@ -107,18 +103,6 @@ public class SnakeGame extends Game {
             snake.setDirection(Direction.DOWN);
         } else if (key.equals(Key.SPACE) && isGameStopped) {
             createGame();
-        } else if (key.equals(Key.SPACE) && !isGameStopped) {
-            snake.revert();
-        }
-
-        if (key.equals(Key.LEFT) || key.equals(Key.RIGHT)
-            || key.equals(Key.UP) || key.equals(Key.DOWN)) {
-
-            if (snake.speed == 0) {
-                stopTurnTimer();
-            } else {
-                setTurnTimer(turnDelay - snake.speed * 20);
-            }
         }
     }
 }

@@ -11,10 +11,8 @@ public class Snake {
     private static final String BODY_SIGN = "\u26AB";
 
     public boolean isAlive = true;
-    public int speed = 1;
 
     private Direction direction = Direction.LEFT;
-    private Game game;
 
     private List<GameObject> snakeParts = new ArrayList<>();
 
@@ -22,171 +20,37 @@ public class Snake {
         snakeParts.add(new GameObject(x, y));
         snakeParts.add(new GameObject(x + 1, y));
         snakeParts.add(new GameObject(x + 2, y));
-        snakeParts.add(new GameObject(x + 3, y));
-        snakeParts.add(new GameObject(x + 4, y));
     }
 
     public void draw(Game game) {
-        this.game = game;
-
-        int size = snakeParts.size();
-
-        for (int i = 0; i < size; i++) {
-            int x = snakeParts.get(i).x;
-            int y = snakeParts.get(i).y;
-
-            if (i == 0) {
-                game.setCellValueEx(x, y, Color.NONE, HEAD_SIGN, isAlive ? Color.BLUE : Color.RED, 75);
-            } else if (i == size - 1) {
-                game.setCellValueEx(x, y, Color.NONE, HEAD_SIGN, isAlive ? Color.BLACK : Color.RED, 75);
-            } else {
-                game.setCellValueEx(x, y, Color.NONE, BODY_SIGN, isAlive ? Color.BLACK : Color.RED, 75);
-            }
+        for (int i = 0; i < snakeParts.size() ; i++) {
+            game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y,
+                    Color.NONE, i == 0 ? HEAD_SIGN : BODY_SIGN,
+                    isAlive ? Color.BLACK : Color.RED, 75);
         }
     }
-
-//    public void setDirection(Direction direction) {
-//        boolean horizontal = (this.direction.equals(Direction.LEFT) || this.direction.equals(Direction.RIGHT))
-//                && snakeParts.get(0).x == snakeParts.get(1).x;
-//
-//        boolean vertical = (this.direction.equals(Direction.UP) || this.direction.equals(Direction.DOWN))
-//                && snakeParts.get(0).y == snakeParts.get(1).y;
-//
-//        if (horizontal || vertical) {
-//            return;
-//        }
-//
-//        horizontal = (direction.equals(Direction.LEFT) && this.direction.equals(Direction.RIGHT))
-//                || (direction.equals(Direction.RIGHT) && this.direction.equals(Direction.LEFT));
-//        vertical = (direction.equals(Direction.UP) && this.direction.equals(Direction.DOWN))
-//                || (direction.equals(Direction.DOWN) && this.direction.equals(Direction.UP));
-//
-//        if (horizontal || vertical) {
-//            return;
-//        }
-//
-//        this.direction = direction;
-//    }
 
     public void setDirection(Direction direction) {
-        boolean acceleration =
-                direction.equals(Direction.LEFT) && this.direction.equals(Direction.LEFT)
-                || direction.equals(Direction.RIGHT) && this.direction.equals(Direction.RIGHT)
-                || direction.equals(Direction.UP) && this.direction.equals(Direction.UP)
-                || direction.equals(Direction.DOWN) && this.direction.equals(Direction.DOWN);
+        boolean horizontal = (this.direction.equals(Direction.LEFT) || this.direction.equals(Direction.RIGHT))
+                && snakeParts.get(0).x == snakeParts.get(1).x;
 
-        boolean braking =
-                direction.equals(Direction.LEFT) && this.direction.equals(Direction.RIGHT)
-                || direction.equals(Direction.RIGHT) && this.direction.equals(Direction.LEFT)
-                || direction.equals(Direction.UP) && this.direction.equals(Direction.DOWN)
-                || direction.equals(Direction.DOWN) && this.direction.equals(Direction.UP);
+        boolean vertical = (this.direction.equals(Direction.UP) || this.direction.equals(Direction.DOWN))
+                && snakeParts.get(0).y == snakeParts.get(1).y;
 
-        int headX = snakeParts.get(0).x;
-        int headY = snakeParts.get(0).y;
-
-        int neckX = snakeParts.get(1).x;
-        int neckY = snakeParts.get(1).y;
-
-        boolean horizontalCollision = (direction.equals(Direction.LEFT) && headX > neckX
-                || direction.equals(Direction.RIGHT) && headX < neckX) && headY == neckY;
-
-        boolean verticalCollision = (direction.equals(Direction.UP) && headY > neckY
-                || direction.equals(Direction.DOWN) && headY < neckY) && headX == neckX;
-
-        if (acceleration && speed < 6) {
-            speed++;
-        } else if (braking && speed > 0) {
-            speed--;
-        } else if(braking && speed == 0) {
-            revert();
-            this.direction = direction;
-        } else if (speed == 0) {
-                speed++;
+        if (horizontal || vertical) {
+            return;
         }
 
-        if (!horizontalCollision && !verticalCollision) {
-            this.direction = direction;
-        }
-    }
+        horizontal = (direction.equals(Direction.LEFT) && this.direction.equals(Direction.RIGHT))
+                || (direction.equals(Direction.RIGHT) && this.direction.equals(Direction.LEFT));
+        vertical = (direction.equals(Direction.UP) && this.direction.equals(Direction.DOWN))
+                || (direction.equals(Direction.DOWN) && this.direction.equals(Direction.UP));
 
-    public void revert() {
-        int size = snakeParts.size();
-        int last = size;
-
-        for (int i = 0; i < size; i++) {
-            if (i == --last
-                    || (i + 1) == last) {
-                break;
-            }
-
-            GameObject tmp1 = snakeParts.get(i);
-            GameObject tmp2 = snakeParts.get(last);
-
-            snakeParts.set(i, tmp2);
-            snakeParts.set(last, tmp1);
+        if (horizontal || vertical) {
+            return;
         }
 
-        int headX = snakeParts.get(0).x;
-        int headY = snakeParts.get(0).y;
-
-        int neckX = snakeParts.get(1).x;
-        int neckY = snakeParts.get(1).y;
-
-        boolean horizontalDirectionLeft = headY == neckY && headX > neckX;
-        boolean horizontalDirectionRight = headY == neckY && headX < neckX;
-        boolean verticalDirectionUp = headX == neckX && headY > neckY;
-        boolean verticalDirectionDown = headX == neckX && headY < neckY;
-
-        boolean horizontalLeftWall = headX + 1 < 0;
-        boolean horizontalRightWall = headX + 1 >= SnakeGame.WIDTH;
-        boolean verticalUpWall = headY + 1 < 0;
-        boolean verticalDownWall = headY + 1 >= SnakeGame.HEIGHT;
-
-        if (horizontalDirectionLeft) {
-            if (!horizontalLeftWall) {
-                this.direction = Direction.LEFT;
-            } else if (!verticalUpWall) {
-                this.direction = Direction.UP;
-            } else {
-                this.direction = Direction.DOWN;
-            }
-        } else if (horizontalDirectionRight) {
-            if (!horizontalRightWall) {
-                this.direction = Direction.LEFT;
-            } else if (!verticalUpWall) {
-                this.direction = Direction.UP;
-            } else {
-                this.direction = Direction.DOWN;
-            }
-        } else if (verticalDirectionUp) {
-            if (!verticalUpWall) {
-                this.direction = Direction.UP;
-            } else if (!horizontalLeftWall) {
-                this.direction = Direction.LEFT;
-            } else {
-                this.direction = Direction.RIGHT;
-            }
-        } else if (verticalDirectionDown) {
-            if (!verticalDownWall) {
-                this.direction = Direction.DOWN;
-            } else if (!horizontalLeftWall) {
-                this.direction = Direction.LEFT;
-            } else {
-                this.direction = Direction.RIGHT;
-            }
-        }
-
-//        if (this.direction.equals(Direction.LEFT)) {
-//            this.direction = Direction.RIGHT;
-//        } else if (this.direction.equals(Direction.RIGHT)) {
-//            this.direction = Direction.LEFT;
-//        } else if (this.direction.equals(Direction.DOWN)) {
-//            this.direction = Direction.UP;
-//        } else if (this.direction.equals(Direction.UP)){
-//            this.direction = Direction.DOWN;
-//        }
-
-        draw(game);
+        this.direction = direction;
     }
 
     public void move(Apple apple) {
