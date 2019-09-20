@@ -1,17 +1,24 @@
 package com.javarush.task.task16.task1630;
 
+import javax.swing.*;
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
 
 public class Solution {
     public static String firstFileName;
     public static String secondFileName;
 
     static {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
         try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             firstFileName = reader.readLine();
             secondFileName = reader.readLine();
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,22 +50,36 @@ public class Solution {
 
     public static class ReadFileThread extends Thread implements ReadFileInterface {
         private String fileName;
-        private String fileContent;
+        private String fileContent = "";
 
         @Override
         public void run() {
             try {
-                BufferedReader reader = new BufferedReader(new FileReader(fileName));
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(
+                                new FileInputStream(fileName), "Windows-1251"));
 
-                while (reader.)
+                ArrayList<String> lines = new ArrayList<>();
+
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
+
+                fileContent = String.join(" ", lines);
+
+                reader.close();
             } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
         @Override
         public void setFileName(String fullFileName) {
-            this.fileName = fileName;
+            this.fileName = fullFileName;
         }
 
         @Override
