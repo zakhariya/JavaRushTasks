@@ -17,11 +17,15 @@ public class Solution {
 
         inputStream.read(bytes);
 
-        String s = new String(bytes, "windows-1251");
+        String[] strings = new String(bytes, "windows-1251").split(" ");
 
-        System.out.println(s);
+        for (String s : strings) {
+            double n = Double.parseDouble(s);
 
-//        System.out.println(new DecimalFormat("#0.00").format(result));
+            outputStream.write(String.format("%d ", Math.round(n)).getBytes());
+        }
 
+        inputStream.close();
+        outputStream.close();
     }
 }

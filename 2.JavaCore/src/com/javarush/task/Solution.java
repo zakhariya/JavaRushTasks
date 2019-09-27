@@ -17,6 +17,7 @@ public class Solution {
         //подменяем in
         System.setIn(is);
 
+
         //вызываем обычный метод, который не подозревает о наших манипуляциях
         readAndPrintLine();
     }
