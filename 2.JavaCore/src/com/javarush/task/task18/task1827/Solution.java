@@ -5,6 +5,7 @@ package com.javarush.task.task18.task1827;
 */
 
 import java.io.*;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,7 @@ public class Solution {
 
         List<String> lines = fileReader.lines().collect(Collectors.toList());
 
-        int id = Integer.parseInt(lines.get(lines.size() - 1).substring(0, 8).replaceAll(" ", ""));
+        int id = findId(lines);
 
         String newId = addSpaces(String.valueOf(++id), 8);
         String name = addSpaces(args[1], 30);
@@ -44,5 +45,19 @@ public class Solution {
         }
 
         return s;
+    }
+
+    private static int findId(List<String> lines) {
+        int max = 0;
+
+        for (String line : lines) {
+            int id = Integer.parseInt(line.substring(0, 8).replaceAll(" ", ""));
+
+            if (id > max) {
+                max = id;
+            }
+        }
+
+        return max;
     }
 }
