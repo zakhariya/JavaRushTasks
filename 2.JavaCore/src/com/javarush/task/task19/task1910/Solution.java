@@ -5,14 +5,8 @@ package com.javarush.task.task19.task1910;
 */
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.regex.Pattern;
 
 public class Solution {
-
-    //TODO: remove
-//    private static final String FIRST_FILE = "e:\\for tests\\to_read.txt";
-//    private static final String SECOND_FILE = "e:\\for tests\\to_write.txt";
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
