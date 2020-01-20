@@ -9,10 +9,6 @@ import java.io.*;
 public class Solution {
     public static TestString testString = new TestString();
 
-    //TODO: remove
-    private static final String FIRST_FILE = "e:\\for tests\\to_read.txt";
-    private static final String SECOND_FILE = "e:\\for tests\\to_write.txt";
-
     public static void main(String[] args) throws IOException {
         BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));
 
