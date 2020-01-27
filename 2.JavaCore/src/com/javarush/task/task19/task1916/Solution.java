@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /* 
@@ -15,10 +14,6 @@ import java.util.List;
 public class Solution {
     public static List<LineItem> lines = new ArrayList<LineItem>();
 
-    //TODO: remove
-    private static final String FIRST_FILE = "e:\\for tests\\to_read.txt";
-    private static final String SECOND_FILE = "e:\\for tests\\to_write.txt";
-
     public static void main(String[] args) throws IOException {
         BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -27,8 +22,8 @@ public class Solution {
 
         consoleReader.close();
 
-        FileReader firstFileReader = new FileReader(FIRST_FILE);
-        FileReader secondFileReader = new FileReader(SECOND_FILE);
+        FileReader firstFileReader = new FileReader(fileFirst);
+        FileReader secondFileReader = new FileReader(fileSecond);
 
         List<String> firstLines = getArray(firstFileReader);
         List<String> secondLines = getArray(secondFileReader);
@@ -37,12 +32,33 @@ public class Solution {
         secondFileReader.close();
 
         fillList(firstLines, secondLines);
-
-        System.out.println(lines);
     }
 
     private static void fillList(List<String> firstLines, List<String> secondLines) {
-//        firstLines.contains()
+
+        int l1 = firstLines.size();
+        int l2 = secondLines.size();
+
+        int j = 0;
+
+        for (int i = 0; i < l1; i++) {
+            String s = firstLines.get(i);
+
+            if (j < l2 && s.equals(secondLines.get(j))) {
+                lines.add(new LineItem(Type.SAME, s));
+                j++;
+            } else if (j + 1 < l2 && s.equals(secondLines.get(j + 1))) {
+                lines.add(new LineItem(Type.ADDED, secondLines.get(j)));
+                lines.add(new LineItem(Type.SAME, secondLines.get(j + 1)));
+                j += 2;
+            } else {
+                lines.add(new LineItem(Type.REMOVED, s));
+            }
+        }
+
+        if (j < l2) {
+            lines.add(new LineItem(Type.ADDED, secondLines.get(j)));
+        }
     }
 
     private static List<String> getArray(FileReader fileReader) throws IOException {

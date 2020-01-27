@@ -14,29 +14,13 @@ public class Game2048 extends Game {
     }
 
     private void createGame() {
-        createNewNumber();
-        createNewNumber();
+
     }
 
     private void drawScene() {
         for (int i = 0; i < gameField.length; i++) {
             for (int j = 0; j < gameField[i].length; j++) {
                 setCellColor(j, i, Color.WHITE);
-            }
-        }
-    }
-
-    private void createNewNumber() {
-        while (true) {
-            int x = getRandomNumber(SIDE);
-            int y = getRandomNumber(SIDE);
-
-            if (gameField[x][y] == 0) {
-                int value = getRandomNumber(10);
-                System.out.println(value);
-                gameField[x][y] = value;
-
-                break;
             }
         }
     }
