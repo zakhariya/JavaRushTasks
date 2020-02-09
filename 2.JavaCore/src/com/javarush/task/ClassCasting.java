@@ -1,6 +1,7 @@
 package com.javarush.task;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -10,6 +11,7 @@ public class ClassCasting {
     //TODO: remove
     private static final String FIRST_FILE = "e:\\for tests\\to_read.txt";
     private static final String SECOND_FILE = "e:\\for tests\\to_write.txt";
+    File file = new File("e:\\for tests\\some_class.dat");
 
     static class Pet
     {
