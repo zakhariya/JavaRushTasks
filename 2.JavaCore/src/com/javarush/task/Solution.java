@@ -10,6 +10,28 @@ public class Solution {
         };
 
         thread.start();
+
+        Solution solution = new Solution();
+
+        Some some = solution.new Some();
+
+        some.gh = 6;
+
+        System.out.println(some.gh);
     }
 
+    private Some createSome() {
+        return new Some();
+    }
+
+    Some s = new Some();
+
+
+    private class Some {
+        private int gh = 5;
+
+//        public static void traTaTa() {
+//
+//        }
+    }
 }
