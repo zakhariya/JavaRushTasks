@@ -1,6 +1,11 @@
 package com.javarush.task;
 
+import java.util.ArrayList;
+
 public class Solution {
+    public static int x;
+    public static ArrayList<String> l;
+
     public static void main(String[] args) {
         Thread thread = new Thread() {
             @Override
