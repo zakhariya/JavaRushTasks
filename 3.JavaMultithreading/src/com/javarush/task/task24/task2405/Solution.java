@@ -43,6 +43,40 @@ public class Solution implements Action {
         }
     };
 
+    //более правильное решение
+//    private Action solutionAction = new Action() {
+//        public void someAction() {
+//            (param > 0 ?
+//                    new FirstClass() {
+//                        @Override
+//                        public Action getDependantAction() {
+//                            while (param > 0) {
+//                                System.out.println(param--);
+//                            }
+//
+//                            super.someAction();
+//
+//                            return new SecondClass() {
+//                                {
+//                                    sb.append(SPECIFIC_ACTION_FOR_ANONYMOUS_SECOND_CLASS_PARAM);
+//                                    sb.append(param);
+//                                }
+//                            };
+//                        }
+//                    }.getDependantAction()
+//
+//                    :
+//
+//                    new SecondClass() {
+//                        {
+//                            sb.append(SPECIFIC_ACTION_FOR_ANONYMOUS_SECOND_CLASS_PARAM);
+//                            sb.append(param);
+//                        }
+//                    }
+//            ).someAction();
+//        }
+//    };
+
 
     @Override
     public void someAction() {
