@@ -18,23 +18,27 @@ public class Solution implements Action {
 
         @Override
         public void someAction() {
-            for (int i = param; i > 0; i--) {
-                System.out.println(i);
-            }
 
-            Action firstAction = new FirstClass() {
-                @Override
-                public Action getDependantAction() {
-                    return null;
-                }
-            };
 
             Action secondAction = new SecondClass();
 
             if (param > 0) {
+                while (param > 0) {
+                    System.out.println(param--);
+                }
+
+                Action firstAction = new FirstClass() {
+                    @Override
+                    public Action getDependantAction() {
+                        super.someAction();
+                        return null;
+                    }
+                };
+
                 firstAction.someAction();
             }
 
+            ((SecondClass) secondAction).sb.append(SecondClass.SPECIFIC_ACTION_FOR_ANONYMOUS_SECOND_CLASS_PARAM + param);
             secondAction.someAction();
         }
     };
