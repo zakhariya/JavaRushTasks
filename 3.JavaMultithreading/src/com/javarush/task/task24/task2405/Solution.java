@@ -8,6 +8,7 @@ public class Solution implements Action {
     public static int countActionObjects;
 
     private int param;
+    private Solution solution;
 
     public Solution(int param) {
         this.param = param;
@@ -17,6 +18,9 @@ public class Solution implements Action {
 
         @Override
         public void someAction() {
+            for (int i = param; i > 0; i--) {
+                System.out.println(i);
+            }
 
             Action firstAction = new FirstClass() {
                 @Override
@@ -28,14 +32,10 @@ public class Solution implements Action {
             Action secondAction = new SecondClass();
 
             if (param > 0) {
-                for (int i = 5; i > 0; i--) {
-                    System.out.println(i);
-                }
-
                 firstAction.someAction();
-            } else {
-                secondAction.someAction();
             }
+
+            secondAction.someAction();
         }
     };
 
