@@ -1,6 +1,6 @@
 package com.javarush.task;
 
-public abstract class TestAbstract {
+public abstract class TestAbstract implements TestInterface {
 
     public TestAbstract() {
 

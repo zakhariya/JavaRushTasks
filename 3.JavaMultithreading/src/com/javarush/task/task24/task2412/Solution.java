@@ -25,7 +25,7 @@ public class Solution {
         String[] filepart = {"change {4}", "open {2} and last {3}"};
 
         ChoiceFormat fileform = new ChoiceFormat(filelimits, filepart);
-        Format[] testFormats = {null, dateFormat, fileform};
+        Format[] testFormats = {null, null, dateFormat, fileform};
         MessageFormat pattform = new MessageFormat("{0}   {1} | {5} {6}");
         pattform.setFormats(testFormats);
 
@@ -43,8 +43,23 @@ public class Solution {
 
     public static void sort(List<Stock> list) {
         list.sort(new Comparator<Stock>() {
+
+            @Override
             public int compare(Stock stock1, Stock stock2) {
-                return 0;
+                int compareName = ((String) stock1.get("name")).compareTo((String) stock2.get("name"));
+                int compareDate = ((Date) stock2.get("date")).compareTo((Date) stock1.get("date"));
+                int compareProf = 0;
+
+                Object change1 = stock1.get("change");
+                Object change2 = stock2.get("change");
+
+                Double prof1 = change1 != null ? (double) change1 : (double) stock1.get("last") - (double) stock1.get("open");
+                Double prof2 = change2 != null ? (double) change2 : (double) stock2.get("last") - (double) stock2.get("open");
+
+                compareProf = prof2.compareTo(prof1);
+
+
+                return compareName == 0 ? (compareDate == 0 ? compareProf : compareDate) : compareName;
             }
         });
     }

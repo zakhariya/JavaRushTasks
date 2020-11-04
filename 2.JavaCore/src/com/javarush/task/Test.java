@@ -5,12 +5,13 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-public class Test extends TestAbstract implements TestInterface {
+public class Test extends TestAbstract { // as implements TestInterface
     //TODO: remove
     public static final String FIRST_FILE = "e:\\for tests\\to_read.txt";
     public static final String SECOND_FILE = "e:\\for tests\\to_write.txt";
     public static final File file = new File("e:\\for tests\\some_class.dat");
 
+    // from TestInterface
     @Override
     void someMethod() {
 
