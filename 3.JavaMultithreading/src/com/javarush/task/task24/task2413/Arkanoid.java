@@ -18,8 +18,6 @@ public class Arkanoid {
     // подставка
     private Stand stand;
 
-
-
     // игра закончена?
     private boolean isGameOver = false;
 

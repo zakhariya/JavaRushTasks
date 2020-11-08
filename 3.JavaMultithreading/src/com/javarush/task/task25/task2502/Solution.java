@@ -19,9 +19,19 @@ public class Solution {
 
         public Car() {
             List<String> wheelNames = Arrays.asList(loadWheelNamesFromDB());
-            Wheel[] wheels = Wheel.values();
+            wheels = new ArrayList<>(4);
 
-
+            if (wheelNames != null && wheelNames.size() == 4) {
+                for (Wheel wheel : Wheel.values()) {
+                  if (wheelNames.contains(wheel.name()) && !wheels.contains(wheel)) {
+                        wheels.add(wheel);
+                    } else {
+                        throw new IllegalArgumentException();
+                    }
+                }
+            } else {
+                throw new IllegalArgumentException();
+            }
         }
 
         protected String[] loadWheelNamesFromDB() {
