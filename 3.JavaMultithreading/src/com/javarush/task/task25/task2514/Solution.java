@@ -20,7 +20,12 @@ public class Solution {
         }
     }
 
-    public static void main(String[] args) {
-        new Solution.YieldRunnable(5).run();
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread0 = new Thread(new YieldRunnable(1));
+        thread0.start();
+//        thread0.join(100);
+        new Thread(new YieldRunnable(2)).start();
+        new Thread(new YieldRunnable(3)).start();
+        new Thread(new YieldRunnable(4)).start();
     }
 }
