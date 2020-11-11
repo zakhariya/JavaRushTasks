@@ -1,5 +1,3 @@
-package com.javarush.task;
-
 import java.io.Externalizable;
 import java.io.Serializable;
 import java.rmi.Remote;

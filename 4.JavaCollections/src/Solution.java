@@ -1,5 +1,3 @@
-package com.javarush.task;
-
 import java.util.ArrayList;
 
 public class Solution {
