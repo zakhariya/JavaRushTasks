@@ -4,35 +4,59 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class University {
-    private List<Student> students = new ArrayList<>();
     private String name;
     private int age;
+    private List<Student> students = new ArrayList<>();
 
     public University(String name, int age) {
         this.name = name;
         this.age = age;
     }
 
-    public Student getStudentWithAverageGrade() {
-        //TODO:
+    public Student getStudentWithAverageGrade(double averageGrade) {
+        for (Student student : students) {
+            if (student.getAverageGrade() == averageGrade) {
+                return student;
+            }
+        }
+
         return null;
     }
 
-    public Student getStudentWithMaxAverageGrade(double averageGrade) {
-        //TODO:
-        return null;
+    public Student getStudentWithMaxAverageGrade() {
+        Student bestStudent = new Student("", 0, 0.0);
+
+        for (Student student: students) {
+            if (bestStudent.getAverageGrade() <= student.getAverageGrade()) {
+                bestStudent = student;
+            }
+        }
+
+        return bestStudent;
     }
 
-    public void getStudentWithMinAverageGradeAndExpel() {
-        //TODO:
+    public Student getStudentWithMinAverageGrade() {
+        Student worseStudent = new Student("", 0, Double.MAX_VALUE);
+
+        for (Student student: students) {
+            if (worseStudent.getAverageGrade() >= student.getAverageGrade()) {
+                worseStudent = student;
+            }
+        }
+
+        return worseStudent;
     }
 
-    public String getName() {
-        return name;
+    public void expel(Student student) {
+        students.remove(student);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 
     public int getAge() {
@@ -43,11 +67,11 @@ public class University {
         this.age = age;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    public String getName() {
+        return name;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    public void setName(String name) {
+        this.name = name;
     }
 }

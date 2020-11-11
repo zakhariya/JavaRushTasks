@@ -9,15 +9,15 @@ public class Teacher extends UniversityPerson {
     }
 
     @Override
-    public String getPosition() {
-        return "Преподаватель";
-    }
-
-    @Override
     public void live() {
         teach();
     }
 
     public void teach() {
+    }
+
+    @Override
+    public String getPosition() {
+        return "Преподаватель";
     }
 }
