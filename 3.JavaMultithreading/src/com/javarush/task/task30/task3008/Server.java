@@ -36,6 +36,7 @@ public class Server {
     }
 
     private static class Handler extends Thread {
+
         private Socket socket;
 
         public Handler(Socket socket) {
@@ -61,13 +62,43 @@ public class Server {
             return serverHandshake(connection);
         }
 
-        private void notifyUsers(Connection connection, String userName) throws IOException {
+        private void serverMainLoop(Connection connection, String userName) throws IOException, ClassNotFoundException {
+            while (true) {
+                Message message = connection.receive();
 
+                if (message.getType() == MessageType.TEXT) {
+                    sendBroadcastMessage(
+                            new Message(MessageType.TEXT, String.format("%s: %s", userName, message.getData())));
+                } else {
+                    ConsoleHelper.writeMessage("Ошибка");
+                }
+            }
+        }
+
+        private void notifyUsers(Connection connection, String userName) throws IOException {
+            for (String name : connectionMap.keySet()) {
+                if (!userName.equals(name)) {
+                    connection.send(new Message(MessageType.USER_ADDED, name));
+                }
+            }
         }
 
         @Override
         public void run() {
+            ConsoleHelper.writeMessage(String.format("Connection established: %s", socket.getRemoteSocketAddress()));
 
+            try (Connection connection = new Connection(socket)) {
+                String userName = serverHandshake(connection);
+                sendBroadcastMessage(new Message(MessageType.USER_ADDED, userName));
+                notifyUsers(connection, userName);
+                serverMainLoop(connection, userName);
+                connectionMap.remove(userName);
+                sendBroadcastMessage(new Message(MessageType.USER_REMOVED, userName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
