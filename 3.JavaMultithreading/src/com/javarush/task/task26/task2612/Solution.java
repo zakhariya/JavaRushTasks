@@ -8,10 +8,23 @@ import java.util.concurrent.locks.ReentrantLock;
 */
 
 public class Solution {
-    protected Lock lock = new ReentrantLock();
+    private Lock lock = new ReentrantLock();
 
     public void someMethod() {
-        // Implement the logic here. Use the lock field
+        boolean locked = lock.tryLock();
+
+        if (locked) {
+            try {
+
+                actionIfLockIsFree();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            actionIfLockIsBusy();
+        }
     }
 
     public void actionIfLockIsFree() {
