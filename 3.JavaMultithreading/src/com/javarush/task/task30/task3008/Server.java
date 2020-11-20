@@ -87,18 +87,25 @@ public class Server {
         public void run() {
             ConsoleHelper.writeMessage(String.format("Connection established: %s", socket.getRemoteSocketAddress()));
 
+            String userName = null;
+            
             try (Connection connection = new Connection(socket)) {
-                String userName = serverHandshake(connection);
+                userName = serverHandshake(connection);
                 sendBroadcastMessage(new Message(MessageType.USER_ADDED, userName));
                 notifyUsers(connection, userName);
                 serverMainLoop(connection, userName);
+            } catch (IOException | ClassNotFoundException e) {
+                if (!e.getMessage().equalsIgnoreCase("Connection reset")){
+                    e.printStackTrace();
+                }
+            }
+
+            if (userName != null) {
                 connectionMap.remove(userName);
                 sendBroadcastMessage(new Message(MessageType.USER_REMOVED, userName));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
             }
+
+            ConsoleHelper.writeMessage("Соединение с " + socket.getRemoteSocketAddress() + " закрыто.");
         }
     }
 }
