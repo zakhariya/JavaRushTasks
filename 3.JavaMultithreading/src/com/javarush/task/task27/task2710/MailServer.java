@@ -10,9 +10,19 @@ public class MailServer implements Runnable {
     @Override
     public void run() {
         long startTime = System.currentTimeMillis();
-        //сделайте что-то тут - do something here
-        String name = Thread.currentThread().getName();
-        long endTime = System.currentTimeMillis();
-        System.out.format("%s MailServer received: [%s] in %d ms after start", name, mail.getText(), (endTime - startTime));
+
+        synchronized (mail) {
+            while (mail.getText() == null) {
+                try {
+                    mail.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            String name = Thread.currentThread().getName();
+            long endTime = System.currentTimeMillis();
+            System.out.format("%s MailServer received: [%s] in %d ms after start", name, mail.getText(), (endTime - startTime));
+        }
     }
 }
