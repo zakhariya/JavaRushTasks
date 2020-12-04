@@ -31,7 +31,7 @@ public class View extends JFrame implements ActionListener {
     }
 
     public void showAbout() {
-        JOptionPane.showMessageDialog(null, "This is an some text/html /n editor", "About program", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "This is an some text/html \n editor", "About program", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void update() {
@@ -124,7 +124,35 @@ public class View extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
 
+        switch (command) {
+            case "Новый" : {
+                controller.createNewDocument();
+                break;
+            }
+            case "Открыть" : {
+                controller.openDocument();
+                break;
+            }
+            case "Сохранить" : {
+                controller.saveDocument();
+                break;
+            }
+            case "Сохранить как..." : {
+                controller.saveDocumentAs();
+                break;
+            }
+            case "Выход" : {
+                controller.exit();
+                break;
+            }
+            case "О программе" : {
+                showAbout();
+                break;
+            }
+
+        }
     }
 
     public Controller getController() {
@@ -140,5 +168,12 @@ public class View extends JFrame implements ActionListener {
     }
 
     public void selectedTabChanged() {
+        if (tabbedPane.getSelectedIndex() == 0) {
+            controller.setPlainText(plainTextPane.getText());
+        } else if (tabbedPane.getSelectedIndex() == 1) {
+            plainTextPane.setText(controller.getPlainText());
+        }
+
+        resetUndo();
     }
 }
