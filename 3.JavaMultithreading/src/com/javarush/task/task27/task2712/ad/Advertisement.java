@@ -14,7 +14,7 @@ public class Advertisement {
         this.initialAmount = initialAmount;
         this.hits = hits;
         this.duration = duration;
-        this.amountPerOneDisplaying =  initialAmount/hits;
+        this.amountPerOneDisplaying = getAmountPerOneDisplaying();
     }
 
     public void revalidate() {
@@ -34,6 +34,19 @@ public class Advertisement {
     }
 
     public long getAmountPerOneDisplaying() {
-        return amountPerOneDisplaying;
+        return hits == 0 ? 0 : initialAmount/hits;
+    }
+
+    //TODO: remove
+    @Override
+    public String toString() {
+        return "Advertisement{" +
+                "content=" + content +
+                ", name='" + name + '\'' +
+                ", initialAmount=" + initialAmount +
+                ", hits=" + hits +
+                ", duration=" + duration +
+                ", amountPerOneDisplaying=" + amountPerOneDisplaying + " sec-" + (amountPerOneDisplaying * 1000)/duration +
+                '}';
     }
 }
