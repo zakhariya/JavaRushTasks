@@ -49,4 +49,11 @@ public class Advertisement {
                 ", amountPerOneDisplaying=" + amountPerOneDisplaying + " sec-" + (amountPerOneDisplaying * 1000)/duration +
                 '}';
     }
+
+//    @Override
+//    public String toString() {
+//        return name + " is displaying... " +
+//                amountPerOneDisplaying + ", " + amountPerOneSecondOfDisplaying;
+//    }
+
 }
