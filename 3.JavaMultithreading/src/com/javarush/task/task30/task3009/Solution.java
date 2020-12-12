@@ -14,4 +14,9 @@ public class Solution {
         System.out.println(getRadix("5321"));       //expected output: []
         System.out.println(getRadix("1A"));         //expected output: []
     }
+
+    private static Set<Integer> getRadix(String number) {
+
+        return new HashSet<>(); // ffgdfgsdf
+    }
 }

@@ -16,5 +16,7 @@ public class Solution {
 
     public int resetLowerBits(int number) {
         //напишите тут ваш код
+
+        return 0;
     }
 }
