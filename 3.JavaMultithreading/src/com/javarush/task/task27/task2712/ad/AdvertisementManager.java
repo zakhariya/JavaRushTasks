@@ -15,66 +15,73 @@ public class AdvertisementManager {
             throw new NoVideoAvailableException();
         }
 
-        List<Advertisement> videos = getMaxProfitVideoList();
+        List<Advertisement> videos = getOptimalVideos();
 
         for (Advertisement video : videos) {
-//            video.revalidate();
+            displayInPlayer(video);
 
-//            System.out.println(video.toString());
+            video.revalidate();
         }
     }
 
-    private List<Advertisement> getMaxProfitVideoList() {
-        List<Advertisement> videos = new ArrayList<>(storage.list());
+    private List<Advertisement> getOptimalVideos() {
+        List<SortedVideoKit> videoKits = new ArrayList<>();
+        List<List<Advertisement>> combinations = getVideoCombinations(storage.list());
+//        System.out.println("Combination: " + combinations.size());
+        for (List<Advertisement> combination : combinations) {
+            SortedVideoKit videoKit = new SortedVideoKit(combination);
 
-        List<SortedVideoKit> videoKits = createVideoKits(videos);
-
-        Collections.sort(videoKits);
-
-        //TODO: remove
-        for (SortedVideoKit kit : videoKits) {
-            System.out.println(kit);
+            if (videoKit.duration <= timeSeconds) {
+                videoKits.add(videoKit);
+            }
         }
 
+        Collections.sort(videoKits);
+//        System.out.println("Dur.: " + videoKits.get(0).duration + " amount: " + videoKits.get(0).amount);
         return videoKits.get(0).getVideos();
     }
 
-    private List<SortedVideoKit> createVideoKits(List<Advertisement> videos) {
-        List<SortedVideoKit> videoKits = new ArrayList<>();
 
-        for (int i = 0; i < videos.size(); i++) {
-            List<Advertisement> newVideos = new ArrayList<>(videos);
+    private List<List<Advertisement>> getVideoCombinations(List<Advertisement> videos) {
+        List<List<Advertisement>> result = new ArrayList<>();
 
-            SortedVideoKit videoKit = new SortedVideoKit(newVideos);
-            videoKits.add(videoKit);
-
-            newVideos.remove(i);
-
-            videoKits.addAll(createVideoKits(newVideos));
+        if (videos.size() > 0) {
+            result.add(videos);
         }
 
-        return videoKits;
+        for (int i = 0; i < videos.size(); i++) {
+            Advertisement video = videos.get(i);
+
+            List<Advertisement> copy = new ArrayList<>(videos);
+            copy.remove(video);
+
+            List<List<Advertisement>> combinations = getVideoCombinations(copy);
+
+            for (List<Advertisement> combination : combinations) {
+                if (!result.contains(combination)) {
+                    result.add(combination);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private void displayInPlayer(Advertisement advertisement) {
+        System.out.println(advertisement.getName() + " is displaying... " + advertisement.getAmountPerOneDisplaying() +
+                ", " + (1000 * advertisement.getAmountPerOneDisplaying() / advertisement.getDuration()));
     }
 
     private class SortedVideoKit implements Comparable<SortedVideoKit> {
-        private final List<Advertisement> videos;
-        private final int duration;
-        private final long amount;
-        private final int size;
+        private List<Advertisement> videos;
+        private int duration;
+        private long amount;
+        private int size;
 
         public SortedVideoKit(List<Advertisement> videos) {
-            int duration = 0;
-            long amount = 0;
-
-            for (Advertisement video : videos) {
-                duration += video.getDuration();
-                amount += video.getAmountPerOneDisplaying();
-            }
-
             this.videos = new ArrayList<>(videos);
-            this.duration = duration;
-            this.amount = amount;
-            this.size = videos.size();
+
+            defineData();
         }
 
         private Comparator<Advertisement> getComparator() {
@@ -98,13 +105,39 @@ public class AdvertisementManager {
         }
 
         public List<Advertisement> getVideos() {
+            defineData();
+
             Collections.sort(videos, getComparator());
 
             return videos;
         }
 
+        private void defineData() {
+            List<Advertisement> videos = new ArrayList<>();
+
+            duration = 0;
+            amount = 0;
+            size = 0;
+
+            for (Advertisement video : this.videos) {
+                if (video.getAmountPerOneDisplaying() > 0 && !videos.contains(video)) {
+
+                    duration += video.getDuration();
+                    amount += video.getAmountPerOneDisplaying();
+                    size++;
+
+                    videos.add(video);
+                }
+            }
+
+            this.videos = videos;
+        }
+
         @Override
         public int compareTo(SortedVideoKit o) {
+            o.defineData();
+            defineData();
+
             if (amount == o.amount) {
                 if (duration == o.duration) {
                     if (size == o.size) {
@@ -118,17 +151,6 @@ public class AdvertisementManager {
             }
 
             return amount < o.amount ? 1 : -1;
-        }
-
-        //TODO: remove
-        @Override
-        public String toString() {
-            return "SortedVideoKit{" +
-                    "videosCount=" + videos.size() +
-                    ", duration=" + duration +
-                    ", amount=" + amount +
-                    ", size=" + size +
-                    '}';
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.javarush.task.task27.task2712.ad;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class AdvertisementStorage {
@@ -15,6 +14,7 @@ public class AdvertisementStorage {
         videos.add(new Advertisement(someContent, "First2 Video", 10000, 200, 2 * 60));
         videos.add(new Advertisement(someContent, "First3 Video", 800, 100, 2 * 60));
         videos.add(new Advertisement(someContent, "First4 Video", 5000, 100, 2 * 60));
+        videos.add(new Advertisement(someContent, "First5 Video", 100, 0, 15 * 60));
         videos.add(new Advertisement(someContent, "Second Video", 100, 0, 15 * 60));
         videos.add(new Advertisement(someContent, "Third Video", 350, 2, 1 * 60));
         videos.add(new Advertisement(someContent, "Third2 Video", 400, 2, 11 * 60));

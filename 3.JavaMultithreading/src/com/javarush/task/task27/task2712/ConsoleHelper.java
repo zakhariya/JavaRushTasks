@@ -35,11 +35,13 @@ public class ConsoleHelper {
 
             if (dish.equalsIgnoreCase("exit")) {
                 break;
-            } else if (dish.length() < 1 || !Dish.allDishesToString().contains(dish)) {
-                writeMessage("Такого ублюда нет в меню.");
-            } else {
+            }
+
+            try {
                 dishes.add(Dish.valueOf(dish));
                 writeMessage("Блюдо добавлено в заказ. " + dishes);
+            } catch (IllegalArgumentException e) {
+                writeMessage("Такого ублюда нет в меню.");
             }
         }
 

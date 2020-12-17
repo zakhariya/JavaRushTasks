@@ -36,24 +36,4 @@ public class Advertisement {
     public long getAmountPerOneDisplaying() {
         return hits == 0 ? 0 : initialAmount/hits;
     }
-
-    //TODO: remove
-    @Override
-    public String toString() {
-        return "Advertisement{" +
-                "content=" + content +
-                ", name='" + name + '\'' +
-                ", initialAmount=" + initialAmount +
-                ", hits=" + hits +
-                ", duration=" + duration +
-                ", amountPerOneDisplaying=" + amountPerOneDisplaying + " sec-" + (amountPerOneDisplaying * 1000)/duration +
-                '}';
-    }
-
-//    @Override
-//    public String toString() {
-//        return name + " is displaying... " +
-//                amountPerOneDisplaying + ", " + amountPerOneSecondOfDisplaying;
-//    }
-
 }
