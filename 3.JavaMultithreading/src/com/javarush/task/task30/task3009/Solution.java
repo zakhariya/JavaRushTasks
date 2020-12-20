@@ -16,7 +16,22 @@ public class Solution {
     }
 
     private static Set<Integer> getRadix(String number) {
+        Set<Integer> set = new HashSet<>();
 
-        return new HashSet<>(); // ffgdfgsdf
+        try {
+            int n = Integer.parseInt(number);
+
+            for (int i = 2; i <= 36; i++) {
+                String s = Integer.toString(n, i);
+                boolean palindrome = s.contentEquals(new StringBuilder(s).reverse());
+
+                if (palindrome) {
+                    set.add(i);
+                }
+            }
+        } catch (NumberFormatException e) {
+        }
+
+        return set;
     }
 }

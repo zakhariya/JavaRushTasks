@@ -19,10 +19,31 @@ public class Solution {
         number = new Number(NumberSystemType._16, "abcdefabcdef");
         result = convertNumberToOtherNumberSystem(number, NumberSystemType._16);
         System.out.println(result);    //expected abcdefabcdef
+
+        number = new Number(NumberSystemType._16, "-3");
+        result = convertNumberToOtherNumberSystem(number, NumberSystemType._16);
+        System.out.println(result);
+
+        number = new Number(NumberSystemType._2, "-1");
+        result = convertNumberToOtherNumberSystem(number, NumberSystemType._16);
+        System.out.println(result);
     }
 
     public static Number convertNumberToOtherNumberSystem(Number number, NumberSystem expectedNumberSystem) {
-        //напишите тут ваш код
-        return null;
+        String result = "";
+        String n = number.getDigit();
+        int ns = number.getNumberSystem().getNumberSystemIntValue();
+        int ens = expectedNumberSystem.getNumberSystemIntValue();
+
+        try {
+            BigInteger a = new BigInteger(n, ns);
+            System.out.println(a);
+            BigInteger b = new BigInteger(a.toString());
+            result = b.toString(ens);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException(String.format("Низя так для %s в %dx системе", n, ns));
+        }
+
+        return new Number(expectedNumberSystem, result);
     }
 }
