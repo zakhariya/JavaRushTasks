@@ -15,8 +15,14 @@ public class Solution {
     }
 
     public int resetLowerBits(int number) {
-        //напишите тут ваш код
 
-        return 0;
+        number = number | (number >> 1);
+        number = number | (number >> 2);
+        number = number | (number >> 4);
+        number = number | (number >> 8);
+        number = number | (number >> 16);
+        number = number | (number >> 32);
+
+        return (number & ~(number >> 1));
     }
 }

@@ -13,6 +13,7 @@ public abstract class AbstractLogger implements Logger {
         if (this.level <= level) {
             info(message);
         }
+
         if (next != null) {
             next.inform(message, level);
         }
