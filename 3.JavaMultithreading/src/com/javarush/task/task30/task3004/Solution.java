@@ -10,13 +10,15 @@ public class Solution {
     private static int coresNumber = Runtime.getRuntime().availableProcessors();
 
     public static void main(String[] args) {
+        int n = 6;
+
         Solution solution = new Solution();
-        String result1 = solution.binaryRepresentationMethod(6);
+        String result1 = solution.binaryRepresentationMethod(n);
         System.out.println(result1);
 
         System.out.println();
         ForkJoinPool forkJoinPool = new ForkJoinPool(coresNumber);
-        String result2 = forkJoinPool.invoke(new BinaryRepresentationTask(6));
+        String result2 = forkJoinPool.invoke(new BinaryRepresentationTask(n));
         System.out.println(result2);
     }
 

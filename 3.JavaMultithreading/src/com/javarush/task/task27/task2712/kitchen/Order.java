@@ -8,6 +8,16 @@ import java.util.List;
 
 public class Order {
     private final Tablet tablet;
+
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    public Tablet getTablet() {
+
+        return tablet;
+    }
+
     protected List<Dish> dishes;
 
     public Order(Tablet tablet) throws IOException {
@@ -16,28 +26,29 @@ public class Order {
         ConsoleHelper.writeMessage(toString());
     }
 
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        if (dishes.size() == 0) return result.toString();
+        result.append("Your order: [" + dishes.get(0));
+
+        for (int i = 1; i < dishes.size(); i++) {
+            result.append(", " + dishes.get(i).name());
+        }
+        result.append("] of " + tablet);
+        result.append(", cooking time " + getTotalCookingTime() + "min");
+        return result.toString();
+    }
+
     public boolean isEmpty() {
         return dishes.isEmpty();
     }
 
     public int getTotalCookingTime() {
-        int time = 0;
-
+        int cookingTime = 0;
         for (Dish dish : dishes) {
-            time += dish.getDuration();
+            cookingTime += dish.getDuration();
         }
-
-        return time;
-    }
-
-    @Override
-    public String toString() {
-        if (dishes.size() == 0) {
-            return "";
-        }
-
-        return "Your order: " + dishes + " of "
-                + tablet.toString() + ", cooking time "
-                + getTotalCookingTime() + "min";
+        return cookingTime;
     }
 }
