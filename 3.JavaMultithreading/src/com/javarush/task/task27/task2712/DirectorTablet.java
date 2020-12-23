@@ -1,11 +1,10 @@
 package com.javarush.task.task27.task2712;
 
+import com.javarush.task.task27.task2712.ad.Advertisement;
+import com.javarush.task.task27.task2712.ad.StatisticAdvertisementManager;
 import com.javarush.task.task27.task2712.statistic.StatisticManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class DirectorTablet {
 
@@ -43,10 +42,32 @@ public class DirectorTablet {
 
 
     public void printActiveVideoSet() {
+        StatisticAdvertisementManager statisticManager = StatisticAdvertisementManager.getInstance();
+        List<Advertisement> videoSet = statisticManager.getVideoSet(true);
 
+        Collections.sort(videoSet, new Comparator<Advertisement>() {
+            @Override
+            public int compare(Advertisement o1, Advertisement o2) {
+                return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+            }
+        });
+        
+        for (Advertisement video : videoSet) {
+            System.out.println(video.getName() + " - " + video.getHits());
+        }
     }
 
     public void printArchivedVideoSet() {
+        List<Advertisement> videoSet = StatisticAdvertisementManager.getInstance().getVideoSet(false);
+        Collections.sort(videoSet, new Comparator<Advertisement>() {
+            @Override
+            public int compare(Advertisement o1, Advertisement o2) {
+                return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+            }
+        });
 
+        for (Advertisement advertisement : videoSet) {
+            System.out.println(advertisement.getName());
+        }
     }
 }

@@ -12,7 +12,6 @@ import java.util.*;
 public class StatisticManager {
     private static StatisticManager ourInstance = new StatisticManager();
     private StatisticStorage statisticStorage = new StatisticStorage();
-    private Set<Cook> cooks = new HashSet<>();
 
     public static StatisticManager getInstance() {
         return ourInstance;
@@ -23,10 +22,6 @@ public class StatisticManager {
 
     public void register(EventDataRow data) {
         this.statisticStorage.put(data);
-    }
-
-    public void register(Cook cook) {
-        this.cooks.add(cook);
     }
 
     public Map<String, Long> getProfitMap() {
