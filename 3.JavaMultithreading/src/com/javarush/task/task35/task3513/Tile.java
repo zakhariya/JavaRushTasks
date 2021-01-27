@@ -18,7 +18,7 @@ public class Tile {
 
     public Color getFontColor() {
         int rgb = value < 16 ? 0x776e65 : 0xf9f6f2;
-
+        
         return new Color(rgb);
     }
 
