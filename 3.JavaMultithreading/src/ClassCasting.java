@@ -1,25 +1,18 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.*;
-
 public class ClassCasting {
 
-    static class Pet
-    {
+    static class Pet {
         public void doPetActions() {
             System.out.println("Pet");
         }
     }
-    static class Cat extends Pet
-    {
+
+    static class Cat extends Pet {
         public void doCatActions() {
             System.out.println("Cat");
         }
     }
-    static class Tiger extends Cat
-    {
+
+    static class Tiger extends Cat {
         public void doTigerActions() {
             System.out.println("Tiger");
         }

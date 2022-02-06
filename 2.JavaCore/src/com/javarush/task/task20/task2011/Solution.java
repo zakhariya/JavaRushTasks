@@ -1,9 +1,8 @@
 package com.javarush.task.task20.task2011;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import org.junit.Test;
+
+import java.io.*;
 
 /*
 Externalizable для апартаментов
@@ -45,7 +44,9 @@ public class Solution {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        Apartment apartment = new Apartment();
 
+        new ObjectOutputStream(new ByteArrayOutputStream()).writeObject(apartment);
     }
 }

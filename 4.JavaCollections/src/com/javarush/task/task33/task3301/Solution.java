@@ -1,7 +1,7 @@
 package com.javarush.task.task33.task3301;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.annotation.JsonAutoDetect;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -28,15 +28,15 @@ public class Solution {
         pets.add(dog);
 
         StringWriter writer = new StringWriter();
-        convertToJSON(writer, pets);
+//        convertToJSON(writer, pets);
         System.out.println(writer.toString());
         //[{"name":"Murka","age":5,"weight":3},{"name":"Killer","age":8,"owner":"Bill Jeferson"}]
     }
 
-    public static void convertToJSON(StringWriter writer, Object object) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(writer, object);
-    }
+//    public static void convertToJSON(StringWriter writer, Object object) throws IOException {
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.writeValue(writer, object);
+//    }
 
     public static class Pet {
         String name;
